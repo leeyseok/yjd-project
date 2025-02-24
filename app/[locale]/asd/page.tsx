@@ -5,6 +5,7 @@ const Page = () => {
   const { t } = useTranslation();
   return (
     <div>{t('home:header')}
+    잘했어
     </div>
   )
 }

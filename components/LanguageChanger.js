@@ -29,7 +29,7 @@ export default function LanguageChanger() {
   return (
     <select value={currentLocale} onChange={handleChange}>
       <option value="kr">한국어</option>
-      <option value="ja">日本語</option>
+      {/* <option value="ja">日本語</option> */}
     </select>
   );
 }

@@ -10,24 +10,25 @@ const HeaderPage = () => {
           <h1 className='flex items-end text-2xl font-bold'>
             <span className='text-blue-600'>여정다</span>
             <span className='text-sm text-blue-600 ml-2'>여</span>
-            <span className='text-sm'>행을</span>
+            <span className='text-sm text-black'>행을</span>
             <span className='text-sm text-blue-600 ml-2'>정</span>
-            <span className='text-sm'>하</span>
+            <span className='text-sm text-black'>하</span>
             <span className='text-sm text-blue-600'>다</span>
           </h1>
           
+          {/*
           <nav className='hidden md:flex space-x-6'>
-            {/* <a href='#' className='text-gray-600 hover:text-blue-600 transition-colors'>
+            <a href='#' className='text-gray-600 hover:text-blue-600 transition-colors'>
               나의 여행
             </a> */}
             {/* TODO 
               내가 만든 여행 플랜 저장하는곳 이동 여행은 캐시에 저장
-            */}
             나의 여행
           </nav>
+          */}
         </div>
         
-        <div className='flex items-center space-x-4'>
+        <div className='flex items-center space-x-4 '>
           <LanguageChanger />
         </div>
       </div>

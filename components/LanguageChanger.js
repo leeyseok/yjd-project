@@ -27,7 +27,7 @@ export default function LanguageChanger() {
   };
 
   return (
-    <select value={currentLocale} onChange={handleChange}>
+    <select value={currentLocale} onChange={handleChange} className="cursor-pointer">
       <option value="kr">한국어</option>
       {/* <option value="ja">日本語</option> */}
     </select>

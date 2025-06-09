@@ -38,15 +38,15 @@ const RootPage = () => {
   };
 
   return (
-    <div className="relative h-[calc(100vh-50px)] w-full">
+    <div className="relative w-full overflow-hidden" style={{ height: 'calc(100vh - 50px)' }}>
       <Image
         src="/main_bg.jpg"
         alt="logo"
         fill
         fetchPriority='high'
-        className='relative'
+        className='relative object-cover'
       />
-      <div className='absolute top-0 left-0 w-full h-full bg-black/50 flex flex-col justify-center items-center'>
+      <div className='absolute top-0 left-0 w-full h-full bg-black/50 flex flex-col justify-center items-center p-4'>
         {renderContent()}
       </div>
     </div>

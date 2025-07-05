@@ -5,10 +5,10 @@ import { Dayjs } from 'dayjs';
 import { pageConst } from '@/constant/pageConst';
 
 // 스텝 컴포넌트 임포트
-import Step0_TripTypeSelection from './step/Step0_TripTypeSelection';
-import Step1_DestinationSelection from './step/Step1_DestinationSelection';
-import Step2_DateSelection from './step/Step2_DateSelection';
-import Step3_AITripPlan from './step/Step3_AITripPlan';
+import Step0_TripTypeSelection from '../templates/Step0_TripTypeSelection';
+import Step1_DestinationSelection from '../templates/Step1_DestinationSelection';
+import Step2_DateSelection from '../templates/Step2_DateSelection';
+import Step3_AITripPlan from '../templates/Step3_AITripPlan';
 
 interface TripPlannerProps {
   onBack: () => void; // 메인 화면으로 돌아가는 함수
@@ -75,17 +75,6 @@ const TripPlanner = ({ onBack }: TripPlannerProps) => {
     onBack(); // 저장 후 메인으로 돌아가기
   };
 
-  const handleSelectDestination = (dest: string) => {
-    setDestination(dest);
-    setStep(2);
-  };
-
-  const handleSelectDates = (start: Dayjs | null, end: Dayjs | null) => {
-    setStartDate(start);
-    setEndDate(end);
-    // generateTripPlan 함수 호출
-    handleGenerateTripPlan();
-  };
 
   const handleReset = () => {
     setStep(0);
@@ -220,7 +209,7 @@ ${themeDescription ? `💭 추가 요청사항: ${themeDescription}\n` : ''}
   };
 
   return (
-    <div className="relative w-full h-full max-w-3xl mx-auto overflow-hidden">
+    <div className="relative max-w-2xl max-h-[100%] sm:max-h-[90%] sm:rounded-lg w-full h-full mx-auto overflow-hidden bg-gray-50 p-2">
       {/* Step 0: 여행 테마 선택 */}
       {step === 0 && (
         <Step0_TripTypeSelection 

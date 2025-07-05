@@ -3,12 +3,6 @@ import { Button, CircularProgress, Paper, Typography, Box, Alert } from '@mui/ma
 import { Dayjs } from 'dayjs';
 import { pageConst } from '@/constant/pageConst';
 
-interface McpStatus {
-  available: boolean;
-  message: string;
-  serverKey?: string;
-  endpoint?: string;
-}
 
 interface Step3Props {
   tripType: typeof pageConst.tripType.domestic | typeof pageConst.tripType.international | null;
@@ -41,8 +35,6 @@ const Step3_AITripPlan = ({
   themeDescription = '',
   isInternational = false
 }: Step3Props) => {
-  const [mcpStatus, setMcpStatus] = useState<McpStatus | null>(null);
-  const [isCheckingMcpStatus, setIsCheckingMcpStatus] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // CSS 애니메이션 스타일 주입
@@ -65,33 +57,11 @@ const Step3_AITripPlan = ({
     };
   }, []);
 
-  // MCP 상태 확인
-  const checkMcpStatus = async () => {
-    setIsCheckingMcpStatus(true);
-    try {
-      const response = await fetch('/api/mcp-status');
-      if (!response.ok) {
-        throw new Error('Perplexity API 상태 확인에 실패했습니다.');
-      }
-      const status = await response.json();
-      setMcpStatus(status);
-      return status.available;
-    } catch (error) {
-      console.error('Perplexity API 상태 확인 중 오류 발생:', error);
-      setMcpStatus({
-        available: false,
-        message: error instanceof Error ? error.message : '알 수 없는 오류가 발생했습니다.'
-      });
-      return false;
-    } finally {
-      setIsCheckingMcpStatus(false);
-    }
-  };
+ 
 
   useEffect(() => {
     // 컴포넌트가 마운트되면 자동으로 Perplexity API 상태 확인
     const initializeComponent = async () => {
-      const mcpAvailable = await checkMcpStatus();
       
       // Perplexity API 상태 확인 후 여행 플랜이 없으면 자동으로 생성 시작
       if (!tripPlan && !isGeneratingPlan) {
@@ -203,7 +173,7 @@ const Step3_AITripPlan = ({
   };
   
   // API 연결 전 테스트용 샘플 플랜 생성 함수
-  const generateSamplePlan = (tripType: any, destination: string, startDate: Dayjs | null, endDate: Dayjs | null) => {
+  const generateSamplePlan = (tripType: typeof pageConst.tripType.domestic | typeof pageConst.tripType.international | null, destination: string, startDate: Dayjs | null, endDate: Dayjs | null) => {
     const themes = selectedThemes.length > 0 ? selectedThemes.map(id => {
       const themeMap: Record<string, string> = {
         'relaxation': '휴양형 여행',
@@ -319,18 +289,6 @@ ${selectedThemes.includes('luxury') ? `
   return (
     <div className="bg-white rounded-lg p-6 shadow-lg">
       <h2 className="text-2xl text-gray-800 mb-4 font-bold">AI 여행 플랜</h2>
-      
-      {/* MCP 상태 표시 */}
-      {mcpStatus && (
-        <Alert 
-          severity={mcpStatus.available ? "success" : "warning"} 
-          sx={{ mb: 2 }}
-        >
-          {mcpStatus.available 
-            ? "Perplexity AI가 정상적으로 동작 중입니다." 
-            : `Perplexity AI 연결 상태: ${mcpStatus.message}`}
-        </Alert>
-      )}
       
       {/* 에러 메시지 표시 */}
       {error && (

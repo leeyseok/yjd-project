@@ -26,7 +26,7 @@ interface Step3Props {
   isInternational?: boolean;
 }
 
-const Step3_AITripPlan = ({
+const AITripPlan = ({
   tripType,
   destination,
   startDate,
@@ -486,4 +486,4 @@ ${selectedThemes.includes('luxury') ? `
   );
 };
 
-export default Step3_AITripPlan; 
+export default AITripPlan;

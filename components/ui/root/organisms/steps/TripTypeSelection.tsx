@@ -20,7 +20,7 @@ interface Step0Props {
   onBack?: () => void;
 }
 
-const Step0_TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
+const TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
   const [selectedThemes, setSelectedThemes] = useState<string[]>([]);
   const [description, setDescription] = useState('');
   const [isInternational, setIsInternational] = useState(false);
@@ -498,4 +498,4 @@ const Step0_TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
   );
 };
 
-export default Step0_TripTypeSelection;
+export default TripTypeSelection;

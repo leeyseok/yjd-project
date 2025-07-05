@@ -2,7 +2,7 @@
 import { Button } from '@mui/material'
 import Image from 'next/image'
 import React, { useState } from 'react'
-import TripPlanner from './TripPlanner'
+import TripPlanner from '../templates/TripPlanner'
 
 const RootPage = () => {
   const [currentView, setCurrentView] = useState<0 | 1>(0); // 0: 메인, 1: 여행 계획 만들기

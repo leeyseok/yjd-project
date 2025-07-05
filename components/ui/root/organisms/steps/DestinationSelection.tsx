@@ -9,7 +9,7 @@ interface Step1Props {
   onNext: () => void;
 }
 
-const Step1_DestinationSelection = ({ tripType, destination, onSetDestination, onNext }: Step1Props) => {
+const DestinationSelection = ({ tripType, destination, onSetDestination, onNext }: Step1Props) => {
   return (
     <div className="bg-white rounded-lg p-6 shadow-lg">
       <h2 className="text-2xl text-gray-800 mb-4 font-bold">여행지 선택</h2>
@@ -53,4 +53,4 @@ const Step1_DestinationSelection = ({ tripType, destination, onSetDestination, o
   );
 };
 
-export default Step1_DestinationSelection;
+export default DestinationSelection;

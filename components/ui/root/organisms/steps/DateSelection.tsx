@@ -20,7 +20,7 @@ interface Step2Props {
 }
 
 
-const Step2_DateSelection = ({ startDate, endDate, onSetStartDate, onSetEndDate, onComplete }: Step2Props) => {
+const DateSelection = ({ startDate, endDate, onSetStartDate, onSetEndDate, onComplete }: Step2Props) => {
   const [recommendations, setRecommendations] = useState<HolidayRecommendation[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
@@ -163,4 +163,4 @@ const Step2_DateSelection = ({ startDate, endDate, onSetStartDate, onSetEndDate,
   );
 };
 
-export default Step2_DateSelection;
+export default DateSelection;

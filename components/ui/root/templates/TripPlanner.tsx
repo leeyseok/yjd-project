@@ -5,10 +5,10 @@ import { Dayjs } from 'dayjs';
 import { pageConst } from '@/constant/pageConst';
 
 // 스텝 컴포넌트 임포트
-import Step0_TripTypeSelection from './step/Step0_TripTypeSelection';
-import Step1_DestinationSelection from './step/Step1_DestinationSelection';
-import Step2_DateSelection from './step/Step2_DateSelection';
-import Step3_AITripPlan from './step/Step3_AITripPlan';
+import TripTypeSelection from '../organisms/steps/TripTypeSelection';
+import DestinationSelection from '../organisms/steps/DestinationSelection';
+import DateSelection from '../organisms/steps/DateSelection';
+import AITripPlan from '../organisms/steps/AITripPlan';
 
 interface TripPlannerProps {
   onBack: () => void; // 메인 화면으로 돌아가는 함수
@@ -223,15 +223,15 @@ ${themeDescription ? `💭 추가 요청사항: ${themeDescription}\n` : ''}
     <div className="relative w-full h-full max-w-3xl mx-auto overflow-hidden">
       {/* Step 0: 여행 테마 선택 */}
       {step === 0 && (
-        <Step0_TripTypeSelection 
-          onSelectTripType={handleSelectTripType} 
+        <TripTypeSelection
+          onSelectTripType={handleSelectTripType}
           onBack={onBack}
         />
       )}
 
       {/* Step 1: 목적지 선택 */}
       {step === 1 && (
-        <Step1_DestinationSelection
+        <DestinationSelection
           tripType={getTripTypeForCompatibility()}
           destination={destination}
           onSetDestination={setDestination}
@@ -241,7 +241,7 @@ ${themeDescription ? `💭 추가 요청사항: ${themeDescription}\n` : ''}
 
       {/* Step 2: 날짜 선택 */}
       {step === 2 && (
-        <Step2_DateSelection
+        <DateSelection
           startDate={startDate}
           endDate={endDate}
           onSetStartDate={setStartDate}
@@ -252,7 +252,7 @@ ${themeDescription ? `💭 추가 요청사항: ${themeDescription}\n` : ''}
 
       {/* Step 3: AI 여행 플랜 */}
       {step === 3 && (
-        <Step3_AITripPlan
+        <AITripPlan
           tripType={getTripTypeForCompatibility()}
           destination={destination}
           startDate={startDate}

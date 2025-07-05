@@ -1,5 +1,5 @@
 import React from 'react';
-import LanguageChanger from '@/features/common/atoms/LanguageChanger';
+import LanguageChanger from '@/components/ui/common/atoms/LanguageChanger';
 
 const Header = () => {
   return (

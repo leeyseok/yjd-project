@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ViewTransitions } from "next-view-transitions";
-import Header from '@/features/header/organisms/Header';
-import TranslationsProvider from '@/features/common/providers/TranslationsProvider';
+import Header from '@/components/ui/header/organisms/Header';
+import TranslationsProvider from '@/components/ui/common/providers/TranslationsProvider';
 import initTranslations from "../i18n";
 
 const geistSans = Geist({

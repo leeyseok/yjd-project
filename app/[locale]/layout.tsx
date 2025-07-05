@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ViewTransitions } from "next-view-transitions";
-import HeaderPage from "@/components/ui/header/pages/HeaderPage";
-import TranslationProvider from '@/components/TranslationsProvider';
+import Header from '@/features/header/organisms/Header';
+import TranslationsProvider from '@/features/common/providers/TranslationsProvider';
 import initTranslations from "../i18n";
 
 const geistSans = Geist({
@@ -40,10 +40,10 @@ export default async function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <TranslationProvider resources={resources} locale={locale} namespaces={i18nNameSpaces}>
-          <HeaderPage />
+          <TranslationsProvider resources={resources} locale={locale} namespaces={i18nNameSpaces}>
+            <Header />
             {children}
-          </TranslationProvider>
+          </TranslationsProvider>
         </body>
       </html>
     </ViewTransitions>

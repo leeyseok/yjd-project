@@ -6,8 +6,6 @@ interface ThemeItem {
   name: string;
   icon: string;
   description: string;
-  color: string;
-  gradient: string;
 }
 
 interface ThemeGridProps {
@@ -28,7 +26,7 @@ const ThemeGrid = ({ themes, selectedThemes, onThemeChange }: ThemeGridProps) =>
         </p>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-96 overflow-y-auto">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-h-96 overflow-y-auto overflow-x-hidden border border-gray-300 rounded-lg p-4">
         {themes.map((theme) => (
           <ThemeCard
             key={theme.id}

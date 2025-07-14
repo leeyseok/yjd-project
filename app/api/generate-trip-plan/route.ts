@@ -7,7 +7,7 @@ import {
 
 async function generateAITripPlan(tripData: TripData) {
   try {
-    const perplexityApiKey = process.env.PERPLEXITY_API_KEY;
+    const perplexityApiKey = process.env.NEXT_PUBLIC_PERPLEXITY_API_KEY;
     if (!perplexityApiKey) {
       throw new Error("Perplexity API 키가 설정되지 않았습니다.");
     }

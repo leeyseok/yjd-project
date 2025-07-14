@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YJD – AI 기반 휴가·여행 일정 추천 서비스
 
-## Getting Started
+> _"공휴일과 개인 선호도를 반영해, AI가 최적의 여행 일정을 자동으로 설계합니다."_
+>
+> - 공휴일 데이터와 사용자의 여행 타입·테마를 입력하면 ✈️ AI가 일정·일정표를 생성
+> - 추천 날짜, 최적 일수, 구체적 일정(식사/이동/관광)을 한눈에 제공
+> - 다국어(KR/JA) 지원으로 글로벌 사용자 접근성 확보
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack & Decisions (기술 스택 및 선택 이유)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| 기술 | 선택 이유 | 장점(Pros) | 단점(Cons) |
+|------|-----------|-----------|-----------|
+| **Next.js 15 (App Router)** | SEO 및 서버 사이드 렌더링, 파일 기반 라우팅 | SSR/SSG 지원, 빠른 빌드(Turbopack) | 러닝 커브, 업그레이드 이슈 |
+| **React 19** | 컴포넌트 기반 UI 및 폭넓은 생태계 | 선언적 코드, 풍부한 라이브러리 | 빈번 업데이트, 번들 크기 증가 가능성 |
+| **TypeScript 5** | 정적 타입으로 런타임 오류 감소 | 타입 안전성, IDE 자동완성 | 초기 설정, 학습 곡선 |
+| **Tailwind CSS 3** | 유틸리티 퍼스트로 빠른 스타일링 | 빠른 개발, 커스터마이징 쉬움 | 클래스 남용 시 가독성 ↓ |
+| **MUI (Button/Icon)** | 검증된 버튼·아이콘 세트 | 디자인·접근성 우수, 빠른 구현 | 번들 크기↑, 스타일 불일치 위험 |
+| **i18next / next-i18next** | 다국어 지원 필요 | 클라이언트·서버 모두 사용, 쉬운 전환 | 초기 설정 복잡 |
+| **Turbopack** | 개발 빌드 속도 향상 | 빠른 HMR, 빌드 시간 단축 | 베타 안정성 이슈 |
+| **Yarn 1 (Classic)** | 결정적 lockfile과 빠른 설치 | 병렬 다운로드, 중복 의존성 감소로 node_modules 용량 ↓ | PowerShell 실행 정책 우회 필요, npm 대비 커뮤니티 축소 |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> 위 기술 스택은 **단순성·생산성·유지보수성**을 최우선으로 선택했습니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Yarn vs npm 선택 배경
+- **속도**: Yarn의 병렬 다운로드로 의존성 설치 시간 단축.
+- **결정적 빌드**: `yarn.lock`으로 모든 환경에서 동일 버전을 보장.
+- **용량 최적화**: 중복 모듈 설치를 방지하여 `node_modules` 디스크 사용량을 줄임 (번들 크기 자체는 빌드 도구에 의해 결정되므로 직접 영향은 없음).
+- **워크스페이스**: 멀티 패키지 관리에 유리.
+- ⚠️ Windows PowerShell 환경에선 실행 정책을 우회( `powershell -ExecutionPolicy Bypass` )해야 하므로 문서에 해당 방법을 명시.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---

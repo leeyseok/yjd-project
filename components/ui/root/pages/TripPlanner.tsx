@@ -75,41 +75,16 @@ const TripPlanner = ({ onBack }: TripPlannerProps) => {
       {currentStep === 3 && (
         <Step4_AITripPlan
           aiPromptState={aiPromptState}
-          // tripPlan={tripPlan}
-          // setTripPlan={setTripPlan}
-          // isGeneratingPlan={isGeneratingPlan}
-          // setIsGeneratingPlan={setIsGeneratingPlan}
-          // // 新しいテーマ情報を追加
-          // selectedThemes={selectedThemes}
-          // themeDescription={themeDescription}
-          // isInternational={isInternational}
           onReset={handleResetAll}
           onFinish={handleFinish}
         />
       )}
 
-      {/* Step 0でない場合にのみ前のステップへボタン表示 */}
-      {/* {currentStep > 0 && (
-        <button
-          onClick={handlePrevStep}
-          className="fixed top-1/2 left-1/4 z-10 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 19.5L8.25 12l7.5-7.5"
-            />
-          </svg>
-        </button>
-      )} */}
+{/* TODO 관련 유튜브 , 이미지, 가독성, 교통편 은 하루히 문제 이동경로 최적의 루트 확실히 하게 일본이면 비짓재팬 감사합니당 
+표같은거 출력만 가능하면 가시성좋게 해도 될듯하고
+그 제휴마케팅 있는거 호텔이나 숙소 링크타고 들어가서 고객이 예매하면 수수료 10퍼 주는거 그걸로 bm잡으면 쏠쏠할듯
+악의적인 무한 리롤로 api 토큰운지 보안도
+사용자 인입>지속적인 사용= 수익 이기떄문에 지속적이게 하려면 첫 사용에 불편함을 없게.. */}
     </div>
   );
 };

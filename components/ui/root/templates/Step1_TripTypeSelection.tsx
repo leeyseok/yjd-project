@@ -1,39 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "@mui/material";
 import { pageConst } from "@/constant/pageConst";
 import ThemeGrid from "../molecules/ThemeGrid";
 import TripTypeToggle from "../atoms/TripTypeToggle";
 import CustomTextArea from "../atoms/CustomTextArea";
 import { Announcement } from "@mui/icons-material";
+import { TravelType } from "@/app/types/TripPlanner/types";
 
-interface Step0Props {
-  onSelectTripType: (
-    themes: string[],
-    description: string,
-    isInternational: boolean
-  ) => void;
+interface Step1Props {
+  travelType: TravelType;
+  selectedThemes: string[];
+  description: string;
+  onTravelTypeChange: (travelType: TravelType) => void;
+  onThemeChange: (themeId: string) => void;
+  onDescriptionChange: (value: string) => void;
+  onSubmit: () => void;
   onBack?: () => void;
 }
 
-const Step0_TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
-  const [selectedThemes, setSelectedThemes] = useState<string[]>([]);
-  const [isInternational, setIsInternational] = useState(false);
-  const [description, setDescription] = useState("");
-
-  const handleThemeChange = (themeId: string) => {
-    setSelectedThemes((prev) =>
-      prev.includes(themeId)
-        ? prev.filter((id) => id !== themeId)
-        : [...prev, themeId]
-    );
-  };
-
-  const handleSubmit = () => {
-    if (selectedThemes.length > 0) {
-      onSelectTripType(selectedThemes, description, isInternational);
-    }
-  };
-
+const Step1_TripTypeSelection: React.FC<Step1Props> = ({
+  travelType,
+  selectedThemes,
+  description,
+  onTravelTypeChange,
+  onThemeChange,
+  onDescriptionChange,
+  onSubmit,
+  onBack,
+}) => {
   return (
     <div className="w-full h-full overflow-y-auto p-2">
       <div className="max-w-4xl mx-auto">
@@ -50,8 +44,8 @@ const Step0_TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
         {/* 국내/해외 토글 */}
         <div className="mb-8">
           <TripTypeToggle
-            isInternational={isInternational}
-            onChange={setIsInternational}
+            travelType={travelType}
+            onChange={onTravelTypeChange}
           />
         </div>
 
@@ -60,7 +54,7 @@ const Step0_TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
           <ThemeGrid
             themes={pageConst.tripThemes}
             selectedThemes={selectedThemes}
-            onThemeChange={handleThemeChange}
+            onThemeChange={onThemeChange}
           />
         </div>
 
@@ -68,7 +62,7 @@ const Step0_TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
         <div className="mb-8">
           <CustomTextArea
             value={description}
-            onChange={setDescription}
+            onChange={onDescriptionChange}
             label="특별한 요청사항 (선택사항)"
             placeholder="예: 아이와 함께 여행이에요, 사진 찍기 좋은 곳 위주로, 예산은 100만원 정도, 특별한 기념일 여행..."
             rows={4}
@@ -89,7 +83,7 @@ const Step0_TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
         {/* 완료 버튼 */}
         <div className="space-y-4">
           <Button
-            onClick={handleSubmit}
+            onClick={onSubmit}
             variant="contained"
             disabled={selectedThemes.length === 0}
             className={`
@@ -97,7 +91,7 @@ const Step0_TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
               ${selectedThemes.length > 0 ? "bg-blue-500" : "bg-gray-300"}
             `}
             sx={{
-              "&:disabled": { 
+              "&:disabled": {
                 cursor: "not-allowed", // 버튼 비활성화 시 커서 변경
                 pointerEvents: "all !important",
               },
@@ -122,4 +116,4 @@ const Step0_TripTypeSelection = ({ onSelectTripType, onBack }: Step0Props) => {
   );
 };
 
-export default Step0_TripTypeSelection;
+export default Step1_TripTypeSelection;

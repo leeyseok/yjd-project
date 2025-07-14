@@ -1,7 +1,7 @@
 export const pageConst = {
-  tripType: {
-    domestic: 0,
-    international: 1,
+  travelType: {
+    domestic: 'domestic',
+    international: 'international',
   },
   // 여행 테마 정의
   tripThemes: [

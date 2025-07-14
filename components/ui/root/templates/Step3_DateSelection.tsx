@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, CardContent, Typography } from '@mui/material';
+import { Button, Card, CardContent, Divider, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko'; // 한국어 로케일
-import { pageConst } from '@/constant/pageConst';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz'; // 아이콘 추가
 import { HolidayRecommendation } from '@/app/types/HolidayRecommendationType';
 import { groupingHolidays } from '@/utils/groupingHolidays';
+import { blue } from '@mui/material/colors';
 
 interface Step2Props {
   startDate: Dayjs | null;
@@ -55,7 +55,7 @@ const Step2_DateSelection = ({ startDate, endDate, onSetStartDate, onSetEndDate,
       <div className="bg-white rounded-lg p-6 shadow-lg">
         <h2 className="text-2xl text-gray-800 mb-6 font-bold">여행 일정 선택</h2>
 
-        {/* 출발일 & 도착일 가로 배치 */}
+        {/* 출발일 & 도착일 입력란*/}
         <div className="flex items-center gap-2 mb-6 border border-gray-300 rounded-lg p-3">
           <div className="flex-1">
             <h3 className="text-gray-500 text-sm mb-1">출발일</h3>
@@ -78,11 +78,16 @@ const Step2_DateSelection = ({ startDate, endDate, onSetStartDate, onSetEndDate,
           </div>
         </div>
 
-        {/* 월 선택 및 추천 리스트 */}
+        
+        <Divider sx={{ my: 2 }} />
+        <h2 className="text-2xl text-gray-800 mb-2 font-bold">여행 월 선택</h2>
+        <p className="text-gray-500 mb-6">여행하는 월을 선택해주시면 추천 날짜를 제시해드릴게요!</p>
+
         <div className="flex flex-col md:flex-row gap-6">
           {/* 왼쪽: 월 선택 */}
+
           <div className="w-full md:w-1/3">
-            <h3 className="text-gray-700 font-semibold mb-3">월 선택</h3>
+            <h3 className="text-gray-700 font-semibold mb-3">여행 월 선택</h3>
             <div className="grid grid-cols-3 gap-2">
               {[...Array(12)].map((_, index) => (
                 <Button
@@ -110,7 +115,7 @@ const Step2_DateSelection = ({ startDate, endDate, onSetStartDate, onSetEndDate,
                         <Card
                           key={index}
                           sx={{
-                            borderLeft: rec.priority === 1 ? '5px solid #1976d2' : '5px solid #bdbdbd',
+                            borderLeft: rec.priority === 1 ? `5px solid ${blue[500]}` : '5px solid gray',
                             cursor: 'pointer',
                             transition: 'transform 0.2s, box-shadow 0.2s',
                             '&:hover': { transform: 'translateY(-2px)', boxShadow: 3 }

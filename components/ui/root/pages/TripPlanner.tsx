@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
-import { Button } from "@mui/material";
-import useTripPlannerControl from "@/hooks/TripPlanner/useTripPlannerControl";
+import React from "react";
+import { useTripPlannerControl } from "@/hooks/TripPlanner/useTripPlannerControl";
+import dynamic from "next/dynamic";
 
-// 스텝 컴포넌트 임포트
-import Step1_TripTypeSelection from "../templates/Step1_TripTypeSelection";
+// 스텝 컴포넌트, 초기화면에 렌더링 되지 않는 컴포넌트
+const Step1_TripTypeSelection = dynamic(() => import("../templates/Step1_TripTypeSelection"), { ssr: false });
+const Step2_DestinationSelection = dynamic(() => import("../templates/Step2_DestinationSelection"), { ssr: false });
+const Step3_DateSelection = dynamic(() => import("../templates/Step3_DateSelection"), { ssr: false });
 
 interface TripPlannerProps {
   onBack: () => void; // 메인 화면으로 돌아가는 함수
@@ -12,144 +14,62 @@ interface TripPlannerProps {
 
 const TripPlanner = ({ onBack }: TripPlannerProps) => {
   const {
-    step,
-    handlePreviousStep,
-    handleSelectTripType
+    currentStep,
+    aiPromptState,
+    handleNextStep,
+    // handlePrevStep,
+    // handleReset,
+    // Step 1
+    handleTravelTypeChange,
+    handleThemeChange,
+    handleThemeDescriptionChange,
+    handleSubmitStep1,
+    // Step 2
+    handleDestinationChange,
+    // Step 3
+    handleStartDateChange,
+    handleEndDateChange,
   } = useTripPlannerControl();
-
-  // 사용하지 않는 상태들과 useEffect 제거
-  const [isGeneratingPlan] = useState(false);
-
-  // const handleComplete = () => {
-  //   // generateTripPlan 함수 호출
-  //   handleGenerateTripPlan();
-  // };
-
-  // const handleFinish = () => {
-  //   console.log('여행 계획 완료 및 저장:', {
-  //     ...aiPromptState.step1,
-  //     destination,
-  //     startDate: startDate?.format('YYYY-MM-DD'),
-  //     endDate: endDate?.format('YYYY-MM-DD'),
-  //     tripPlan,
-  //   });
-  //   // TODO: 여행 플랜 저장 및 다음 단계로 이동 구현
-  //   onBack(); // 저장 후 메인으로 돌아가기
-  // };
-
-  // const handleReset = () => {
-  //   setStep(0);
-  //   setAiPromptState((prev) => ({
-  //     ...prev,
-  //     step1: {
-  //       isInternational: false,
-  //       selectedThemes: [],
-  //       themeDescription: '',
-  //     },
-  //   }));
-  //   setDestination('');
-  //   setStartDate(null);
-  //   setEndDate(null);
-  //   setTripPlan('');
-  //   setIsGeneratingPlan(false);
-  // };
-  // const handleGenerateTripPlan = async () => {
-  //   console.log('=== generateTripPlan 함수 호출 ===');
-  //   console.log('현재 상태값들:');
-  //   console.log('- selectedThemes:', selectedThemes);
-  //   console.log('- themeDescription:', themeDescription);
-  //   console.log('- isInternational:', isInternational);
-  //   console.log('- destination:', destination);
-  //   console.log('- dates:', { startDate, endDate });
-
-  //   if (!selectedThemes?.length || !destination || !startDate || !endDate) {
-  //     const missingInfo = [];
-  //     if (!selectedThemes?.length) missingInfo.push('여행 테마');
-  //     if (!destination) missingInfo.push('목적지');
-  //     if (!startDate) missingInfo.push('시작일');
-  //     if (!endDate) missingInfo.push('종료일');
-
-  //     alert(`필요한 여행 정보가 부족합니다:\n- ${missingInfo.join('\n- ')}`);
-  //     return;
-  //   }
-
-  //   setIsGeneratingPlan(true);
-  //   try {
-  //     const themes = selectedThemes.map(id =>
-  //       pageConst.themeNameMapping[id as keyof typeof pageConst.themeNameMapping] || id
-  //     );
-
-  //     const requestData = {
-  //       themes,
-  //       themeDescription,
-  //       destination,
-  //       dates: { startDate, endDate },
-  //       isInternational
-  //     };
-
-  //     console.log('API 요청 데이터:', requestData);
-
-  //     const response = await fetch('/api/generate-trip-plan', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(requestData),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('여행 플랜 생성에 실패했습니다.');
-  //     }
-
-  //     const data = await response.json();
-  //     setTripPlan(data.tripPlan);
-  //     setStep(3);
-  //   } catch (error) {
-  //     console.error('여행 플랜 생성 오류:', error);
-  //     // alert('여행 플랜 생성에 실패했습니다. 다시 시도해주세요.');
-
-  //     // 샘플 플랜 생성 함수 호출
-  //     const samplePlan = generateSamplePlan();
-  //     setTripPlan(samplePlan);
-  //     setStep(3);
-  //   } finally {
-  //     setIsGeneratingPlan(false);
-  //   }
-  // };
 
   return (
     <div className="relative max-w-2xl max-h-[100%] sm:max-h-[90%] sm:rounded-lg w-full h-full mx-auto overflow-hidden bg-gray-50 p-2">
       {/* Step 1: 여행 테마 선택 */}
-      {step === 0 && (
+      {currentStep === 0 && (
         <Step1_TripTypeSelection
-          onSelectTripType={handleSelectTripType}
+          travelType={aiPromptState.step1.travelType}
+          selectedThemes={aiPromptState.step1.selectedThemes}
+          description={aiPromptState.step1.themeDescription}
+          onTravelTypeChange={handleTravelTypeChange}
+          onThemeChange={handleThemeChange}
+          onDescriptionChange={handleThemeDescriptionChange}
+          onSubmit={handleSubmitStep1}
           onBack={onBack}
         />
       )}
 
-      {/* Step 2: 목적지 선택 */}
-      {/* {step === 1 && (
+      {/* Step 2: 여행 목적지 선택 */}
+      {currentStep === 1 && (
         <Step2_DestinationSelection
-          tripType={getTripTypeForCompatibility()}
-          destination={destination}
-          onSetDestination={setDestination}
+          tripType={aiPromptState.step1.travelType}
+          destination={aiPromptState.step2.destination}
+          onSetDestination={handleDestinationChange}
           onNext={handleNextStep}
         />
-      )} */}
+      )}
 
-      {/* Step 2: 날짜 선택 */}
-      {/* {step === 2 && (
+      {/* Step 2: 日付の選択 */}
+      {currentStep === 2 && (
         <Step3_DateSelection
-          startDate={startDate}
-          endDate={endDate}
-          onSetStartDate={setStartDate}
-          onSetEndDate={setEndDate}
-          onComplete={handleComplete}
+          startDate={aiPromptState.step3.startDate}
+          endDate={aiPromptState.step3.endDate}
+          onSetStartDate={handleStartDateChange}
+          onSetEndDate={handleEndDateChange}
+          onComplete={handleNextStep}
         />
-      )} */}
+      )}
 
-      {/* Step 3: AI 여행 플랜 */}
-      {/* {step === 3 && (
+      {/* Step 3: AI旅行プラン */}
+      {/* {currentStep === 3 && (
         <Step4_AITripPlan
           tripType={getTripTypeForCompatibility()}
           destination={destination}
@@ -161,30 +81,35 @@ const TripPlanner = ({ onBack }: TripPlannerProps) => {
           setIsGeneratingPlan={setIsGeneratingPlan}
           onFinish={handleFinish}
           onReset={handleReset}
-          // 새로운 테마 정보 추가
+          // 新しいテーマ情報を追加
           selectedThemes={selectedThemes}
           themeDescription={themeDescription}
           isInternational={isInternational}
         />
       )} */}
 
-      {/* Step 0이 아닐 때만 이전 단계 버튼 표시 */}
-      {step > 0 && (
-        <Button
-          onClick={handlePreviousStep}
-          variant="outlined"
-          sx={{
-            mt: 3,
-            display: "block",
-            mx: "auto",
-            color: "white",
-            borderColor: "white",
-          }}
-          disabled={isGeneratingPlan}
+      {/* Step 0でない場合にのみ前のステップへボタン表示 */}
+      {/* {currentStep > 0 && (
+        <button
+          onClick={handlePrevStep}
+          className="fixed top-1/2 left-1/4 z-10 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors"
         >
-          이전 단계로
-        </Button>
-      )}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 19.5L8.25 12l7.5-7.5"
+            />
+          </svg>
+        </button>
+      )} */}
     </div>
   );
 };

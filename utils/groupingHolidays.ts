@@ -53,11 +53,11 @@ export const groupingHolidays = (): HolidayRecommendation[] => {
     // 4. 휴일들을 그룹화하여 연결된 블록 찾기 + 특별 규칙 적용
     const holidayBlocks: HolidayRecommendation[] = [];
     
-    // 이 부분이 핵심: 특정 기간 내의 모든 휴일을 하나의 블록으로 통합
-    // 탈모오는거같음
+    // 특정 기간 내의 모든 휴일을 하나의 블록으로 통합
+    // 아 탈모 올거 같다
     for (let i = 0; i < allDaysOff.length; i++) {
         // 각 휴일마다 새로운 블록 시작
-        let currentStart = allDaysOff[i].date;
+        const currentStart = allDaysOff[i].date;
         let currentEnd = allDaysOff[i].date;
         
         // 이 블록에 포함된 공휴일 이름들 (Set으로 중복 방지)

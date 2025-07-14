@@ -72,7 +72,7 @@ export const pageConst = {
       description: '애니메이션 성지순례, 오타쿠 문화',
     }
   ],
-  // 테마 이름 매핑 (API 전송용)
+  // 테마 이름 매핑
   themeNameMapping: {
     'relaxation': '휴양형 여행',
     'culture': '문화·역사 탐방',

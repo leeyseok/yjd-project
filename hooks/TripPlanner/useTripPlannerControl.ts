@@ -1,22 +1,8 @@
 import { useState } from "react";
 import { pageConst } from "@/constant/pageConst";
-import { TravelType } from "@/app/types/TripPlanner/types";
+import { AIPromptStateTypes, TravelType } from "@/app/types/TripPlanner/types";
 import { Dayjs } from "dayjs";
 
-type AIPromptStateTypes = {
-  step1: {
-    travelType: TravelType;
-    selectedThemes: string[];
-    themeDescription: string;
-  };
-  step2: {
-    destination: string;
-  };
-  step3: {
-    startDate: Dayjs | null;
-    endDate: Dayjs | null;
-  };
-}
 
 export const useTripPlannerControl = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -40,7 +26,24 @@ export const useTripPlannerControl = () => {
   const handleNextStep = () => setCurrentStep((prev) => prev + 1);
   const handlePrevStep = () => setCurrentStep((prev) => prev - 1);
   const handleReset = () => setCurrentStep(0);
-
+  const handleResetAll = () =>{
+     setAiPromptState((prev) => ({
+    ...prev,
+    step1: {
+      travelType: pageConst.travelType.domestic as TravelType,
+      selectedThemes: [],
+      themeDescription: "",
+    },
+    step2: {
+      destination: "",
+    },
+    step3: {
+      startDate: null,
+      endDate: null,
+    },
+    }));
+    setCurrentStep(0);
+  };
   // ===== Step 1 function =====
   // 여행 종류(국내, 해외) 변경 핸들러
   const handleTravelTypeChange = (travelType: TravelType) => {
@@ -104,12 +107,19 @@ export const useTripPlannerControl = () => {
     }));
   };
 
+  // Step4 상태 변경 핸들러
+  const handleFinish = () => {
+    // setCurrentStep(4);
+    console.log("handleFinish");
+  };
+
   return {
     currentStep,
     aiPromptState,
     handleNextStep,
     handlePrevStep,
     handleReset,
+    handleResetAll,
     // Step 1
     handleTravelTypeChange,
     handleThemeChange,
@@ -120,5 +130,7 @@ export const useTripPlannerControl = () => {
     // Step 3
     handleStartDateChange,
     handleEndDateChange,
+    // Step 4
+    handleFinish,
   };
 };

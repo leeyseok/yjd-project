@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 const Step1_TripTypeSelection = dynamic(() => import("../templates/Step1_TripTypeSelection"), { ssr: false });
 const Step2_DestinationSelection = dynamic(() => import("../templates/Step2_DestinationSelection"), { ssr: false });
 const Step3_DateSelection = dynamic(() => import("../templates/Step3_DateSelection"), { ssr: false });
+const Step4_AITripPlan = dynamic(() => import("../templates/Step4_AITripPlan"), { ssr: false });
 
 interface TripPlannerProps {
   onBack: () => void; // 메인 화면으로 돌아가는 함수
@@ -17,8 +18,8 @@ const TripPlanner = ({ onBack }: TripPlannerProps) => {
     currentStep,
     aiPromptState,
     handleNextStep,
+    handleResetAll,
     // handlePrevStep,
-    // handleReset,
     // Step 1
     handleTravelTypeChange,
     handleThemeChange,
@@ -29,6 +30,8 @@ const TripPlanner = ({ onBack }: TripPlannerProps) => {
     // Step 3
     handleStartDateChange,
     handleEndDateChange,
+    // Step 4
+    handleFinish,
   } = useTripPlannerControl();
 
   return (
@@ -69,24 +72,21 @@ const TripPlanner = ({ onBack }: TripPlannerProps) => {
       )}
 
       {/* Step 3: AI旅行プラン */}
-      {/* {currentStep === 3 && (
+      {currentStep === 3 && (
         <Step4_AITripPlan
-          tripType={getTripTypeForCompatibility()}
-          destination={destination}
-          startDate={startDate}
-          endDate={endDate}
-          tripPlan={tripPlan}
-          setTripPlan={setTripPlan}
-          isGeneratingPlan={isGeneratingPlan}
-          setIsGeneratingPlan={setIsGeneratingPlan}
+          aiPromptState={aiPromptState}
+          // tripPlan={tripPlan}
+          // setTripPlan={setTripPlan}
+          // isGeneratingPlan={isGeneratingPlan}
+          // setIsGeneratingPlan={setIsGeneratingPlan}
+          // // 新しいテーマ情報を追加
+          // selectedThemes={selectedThemes}
+          // themeDescription={themeDescription}
+          // isInternational={isInternational}
+          onReset={handleResetAll}
           onFinish={handleFinish}
-          onReset={handleReset}
-          // 新しいテーマ情報を追加
-          selectedThemes={selectedThemes}
-          themeDescription={themeDescription}
-          isInternational={isInternational}
         />
-      )} */}
+      )}
 
       {/* Step 0でない場合にのみ前のステップへボタン表示 */}
       {/* {currentStep > 0 && (

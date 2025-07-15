@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { kv } from "@vercel/kv";
-import { Ratelimit } from "@upstash/ratelimit";
 import { TripData } from "@/app/types/TripPlanner/types";
 import {
   buildSystemPrompt,
@@ -51,31 +49,6 @@ async function generateAITripPlan(tripData: TripData) {
 }
 
 export async function POST(request: NextRequest) {
-  // TODO 회원기능 추가하면 if 문으로 회원인지 확인하고 회원이 아니면 요청 횟수 제한 로직 추가
-  // IP 기반 요청 횟수 제한 로직
-  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
-  const ratelimit = new Ratelimit({
-    redis: kv,
-    // 하루에 2번 요청 가능
-    limiter: Ratelimit.slidingWindow(2, "1d"),
-  });
-
-  const { success, reset } = await ratelimit.limit(ip);
-
-  if (!success) {
-    const resetDate = new Date(reset);
-    const month = String(resetDate.getMonth() + 1).padStart(2, "0");
-    const day = String(resetDate.getDate()).padStart(2, "0");
-    const hour = String(resetDate.getHours()).padStart(2, "0");
-    const minute = String(resetDate.getMinutes()).padStart(2, "0");
-
-    const formatted = `${month}/${day} ${hour}:${minute}`;
-
-    return NextResponse.json(
-      { error: `요청 횟수를 초과했습니다. ${formatted}에 다시 시도해주세요.` },
-      { status: 429 }
-    );
-  }
   try {
     const tripData: TripData = await request.json();
 

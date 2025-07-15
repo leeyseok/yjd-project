@@ -60,11 +60,19 @@ export async function POST(request: NextRequest) {
     limiter: Ratelimit.slidingWindow(2, "1d"),
   });
 
-  const { success } = await ratelimit.limit(ip);
+  const { success, reset } = await ratelimit.limit(ip);
 
   if (!success) {
+    const resetDate = new Date(reset);
+    const month = String(resetDate.getMonth() + 1).padStart(2, "0");
+    const day = String(resetDate.getDate()).padStart(2, "0");
+    const hour = String(resetDate.getHours()).padStart(2, "0");
+    const minute = String(resetDate.getMinutes()).padStart(2, "0");
+
+    const formatted = `${month}/${day} ${hour}:${minute}`;
+
     return NextResponse.json(
-      { error: "요청 횟수를 초과했습니다. 잠시 후 다시 시도해주세요." },
+      { error: `요청 횟수를 초과했습니다. ${formatted}에 다시 시도해주세요.` },
       { status: 429 }
     );
   }

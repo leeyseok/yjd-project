@@ -22,21 +22,20 @@ export const metadata: Metadata = {
 };
 const i18nNameSpaces = ["home"];
 
+interface RootLayoutProps {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}
 export default async function RootLayout({
   children,
-  params,
-}: Readonly<{
-  children: React.ReactNode;
-  params: {
-    locale: string;
-  };
-}>) {
+  params
+}: RootLayoutProps) {
   const { locale } = await params;
   const { resources } = await initTranslations(locale, i18nNameSpaces);
 
   return (
     <ViewTransitions>
-      <html lang="kr">
+      <html lang={locale} suppressHydrationWarning>
         <head>
           <link
             rel="preload"

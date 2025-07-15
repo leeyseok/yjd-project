@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { kv } from "@vercel/kv";
+import { Ratelimit } from "@upstash/ratelimit";
 import { TripData } from "@/app/types/TripPlanner/types";
 import {
   buildSystemPrompt,
@@ -49,6 +51,23 @@ async function generateAITripPlan(tripData: TripData) {
 }
 
 export async function POST(request: NextRequest) {
+  // TODO 회원기능 추가하면 if 문으로 회원인지 확인하고 회원이 아니면 요청 횟수 제한 로직 추가
+  // IP 기반 요청 횟수 제한 로직
+  const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+  const ratelimit = new Ratelimit({
+    redis: kv,
+    // 하루에 2번 요청 가능
+    limiter: Ratelimit.slidingWindow(2, "1d"),
+  });
+
+  const { success } = await ratelimit.limit(ip);
+
+  if (!success) {
+    return NextResponse.json(
+      { error: "요청 횟수를 초과했습니다. 잠시 후 다시 시도해주세요." },
+      { status: 429 }
+    );
+  }
   try {
     const tripData: TripData = await request.json();
 
@@ -65,7 +84,7 @@ export async function POST(request: NextRequest) {
       );
     }
     try {
-      const {tripPlan} = await generateAITripPlan(tripData);
+      const { tripPlan } = await generateAITripPlan(tripData);
       return NextResponse.json({ tripPlan });
     } catch (error) {
       throw new Error("AI 여행 플랜 생성 실패", { cause: error });

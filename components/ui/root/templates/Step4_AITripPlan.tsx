@@ -26,6 +26,7 @@ const Step4_AITripPlan: React.FC<Step4Props> = ({
   const [generatedPlan, setGeneratedPlan] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [isOverLimit, setIsOverLimit] = useState(false);
   const generateTripPlan = async () => {
     console.log("AI 플랜 생성을 시작합니다:", aiPromptState);
     try {
@@ -43,9 +44,14 @@ const Step4_AITripPlan: React.FC<Step4Props> = ({
           endDate,
         }),
       });
-      const { tripPlan } = await response.json();
-      console.log("tripPlan", tripPlan);
-      setGeneratedPlan(tripPlan);
+      const { tripPlan, error } = await response.json();
+      if (error) {
+        setError(error);
+        setGeneratedPlan(null);
+        setIsOverLimit(true);
+        return;
+      }
+      setGeneratedPlan(tripPlan || null);
     } catch (e) {
       console.log("error occurred:", e);
       setError("AI 플랜 생성에 실패했습니다. 잠시 후 다시 시도해주세요.");
@@ -85,12 +91,14 @@ const Step4_AITripPlan: React.FC<Step4Props> = ({
               <TripPlanDisplay tripPlan={generatedPlan} />
             </div>
           </div>
-          <PlanActionButtons
-            onReset={onReset}
-            onRegenerate={generateTripPlan}
-            onFinish={onFinish}
-            isPlanGenerated={!!generatedPlan}
-          />
+          {!isOverLimit && (
+            <PlanActionButtons
+              onReset={onReset}
+              onRegenerate={generateTripPlan}
+              onFinish={onFinish}
+              isPlanGenerated={!!generatedPlan}
+            />
+          )}
         </>
       )}
     </div>
